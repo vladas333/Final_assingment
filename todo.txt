@@ -1,0 +1,21 @@
+Create a Hangman
+
+1. Create word list (ex. Animal list)
+2. Write code of selecting word from list
+3. Write player name (save in log file)
+4. Write code of guessing letter
+4. CLI make (terminal messaging and info)
+5. Make a graphic hanging interaction
+
+4. Write code of gessing letter
+    1. Count word lenght
+    2. Split word in letters
+    3. Guessing counter (loop max turns - 10).
+        1. If longer word bigger loop?
+    4. Check input letter is or not. 
+        1. If in - write letter in correct plase
+        2. if not minus 1 point (graphic interaction)
+    5. Make player stand
+        1. Winner/lost player with name (Congrat or make a soory statement)
+        2. Write an anser
+    6. Write winner/losser name and score in player db (json file)
