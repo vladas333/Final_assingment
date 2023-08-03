@@ -1,6 +1,6 @@
 import random
+from typing import Union
 from hang_man import hanged
-
 from word_list import ANIMAL_LIST
 
 
@@ -23,24 +23,32 @@ class PlayHangMan(HangManBase):
         }
     def __init__(self, player_name: str, selected_word: str) -> None:
         self.player_name = player_name
-        self.selected_word = selected_word
+        self.selected_word = selected_word.split()
         self.secret_word_lenght = HangManBase().word_lenght(self.selected_word)
         self.secret_word_list = []
 
     def check_unused_letter(self, letter_guessed: str) -> bool:
-        pass
+        if letter_guessed in self.secret_word_list:
+            return False
+        else:
+            return self.secret_word_list.append(letter_guessed)
 
     def secret_word_print(self, letter_guessed: str) -> None:
-        
-        for letter_guessed in self. selected_word:
-            if letter_guessed in 
+        pass
+        # for letter_guessed in self. selected_word:
+        #     if letter_guessed in 
             
-    def start_program(self, letter_guessed: str) -> bool:
-        if self.check_unused_letter(letter_guessed) == True:
-
-            if letter_guessed in self.selected_word:
-                return True
-    
+    def start_program(self, letter_guessed: str) -> Union[list, bool]:
+        if letter_guessed.isalpha():
+            if self.check_unused_letter(letter_guessed) == True:
+                if letter_guessed in self.selected_word:
+                    return self.secret_word_lenght + True
+                else:
+                    return f"Show guessed letter and wrong" + False
+            else:
+                return f"Should be statement about used letter" + True
+        else:
+            return f"Should be statemant about not alpha" + True
 
 
 
