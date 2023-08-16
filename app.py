@@ -2,7 +2,7 @@ import os
 from word_list import ANIMAL_LIST
 import time
 from main_program import HangManBase, PlayHangMan
-from hang_man import hangman_graphic
+from hang_man_graphic import hangman_graphic
 
 
 while True:
@@ -74,7 +74,7 @@ while True:
                 print(hangman_graphic[main_game_mode.bad_guess_count])
                 print("You win")
                 time.sleep(10)
-                # add selection play again or exit
+                # add selection play again or exi
                 break
             # print(f"Already used letters:\n", main_game_mode.show_used_letters())
         # Here should start winner or loser logic
