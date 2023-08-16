@@ -1,5 +1,15 @@
+import logging
 import random
+from typing import Union
 from word_list import ANIMAL_LIST
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename="player_data.log",
+    filemode="a",
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%d/%m/%Y %H:%M:%S",
+)
 
 
 class HangManBase:
@@ -9,20 +19,97 @@ class HangManBase:
     def word_selection(self) -> str:
         return random.choice(self.animal_list).upper()
 
-    def word_lenght(self, picked_word: str) -> int:
-        return len(picked_word.replace(" ", ""))
-    
+    def list_to_string(self, print_guessing_word: list) -> str:
+        hidden_word = ""
+        for element in print_guessing_word:
+            hidden_word += element
+        return hidden_word
 
-class WordGuessing(HangManBase):
-    DATA_RETURN_DICT = {
-        "max_failure" : 10,
-        "wrong_guesses" : 0,
-        "all_guessed_letters" : ""
-        }
+
+class PlayHangMan(HangManBase):
     def __init__(self, player_name: str, selected_word: str) -> None:
         self.player_name = player_name
-        self.selected_word = selected_word
-        self.secret_word_lenght = HangManBase().word_lenght(self.selected_word)
-        
-    def start_program(self, letter_guessed: int) -> dict:
-        pass
+        self.selected_word = list(selected_word)
+        self.guessed_letters_list = [" "]
+        self.max_guess = 10
+        self.bad_guess_count = 0
+
+    def check_unused_letters(self, letter_guessed: str) -> Union[bool, list]:
+        if letter_guessed in self.guessed_letters_list:
+            return self.guessed_letters_list or False
+        else:
+            return self.guessed_letters_list.append(letter_guessed) or True
+
+    def show_used_letters(self) -> str:
+        return self.list_to_string(self.guessed_letters_list)
+
+    def guessing_word_hide(self, letter_guessed: str) -> str:
+        print_guessing_word = []
+        for letter_guessed in self.selected_word:
+            if letter_guessed in self.guessed_letters_list:
+                print_guessing_word.append(letter_guessed)
+            else:
+                print_guessing_word.append("-")
+        return self.list_to_string(print_guessing_word)
+
+    def bad_guess_counter(self) -> bool:
+        guess_count = 0
+        for letter in self.guessed_letters_list:
+            if letter not in self.selected_word:
+                guess_count = guess_count + 1
+        if guess_count != self.max_guess:
+            return True
+        else:
+            return False
+    
+    def is_won(self) -> bool:
+        counter = 0
+        for letter in self.selected_word:
+            if letter in self.guessed_letters_list:
+                counter += 1
+        if counter == len(self.selected_word):
+            return True
+        else:
+            return False
+    
+    def bad_guess_counter(self) -> int:
+        self.bad_guess_count += 1
+        return self.bad_guess_count
+
+
+    def guess_one_letter(self, letter_guessed: str) -> Union[list, int]:
+        if letter_guessed.isalpha() and len(letter_guessed) == 1:
+            if self.check_unused_letters(letter_guessed) == True:
+                if letter_guessed in self.selected_word:
+                    if self.is_won() == True:
+                        logging.info(
+                        f"Player {self.player_name} WINS. "
+                        f"Word was: {self.list_to_string(self.selected_word)}. "
+                        f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+                    )
+                        return 6 # Winner
+                    else:
+                        return 1 # Guess successfull
+                else:
+                    # counter_bad =
+                    if self.bad_guess_counter() == self.max_guess:  # Bad guess counter
+                        logging.info(
+                            f"Player {self.player_name} LOST. "
+                            f"Word was: {self.list_to_string(self.selected_word)}. "
+                            f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}")
+                        return 5  # Dont have guess Still have guess                    
+                    else:
+                        return 2 # Still have guess
+            else:
+                return 3  # You already used letter
+        else:
+            return 4  # Not a letter used or user several letters
+
+    def guess_all_word(self, all_word: str) -> int:
+        all_word_list = list(all_word)
+        if all_word_list == self.selected_word:
+            return 1
+        elif self.bad_guess_counter() == self.max_guess:
+            return 3
+        else:
+            return 2
