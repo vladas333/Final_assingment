@@ -34,9 +34,12 @@ class HangManBase:
             self.word_list = open("word_list/countries.txt", 'r')
             selected_word = self.select_word_list(self.word_list)
             return selected_word
-        if selected_list == 2:
+        elif selected_list == 2:
             self.word_list = open("word_list/animals.txt", 'r')
             selected_word = self.select_word_list(self.word_list)
+            return selected_word
+        else:
+            selected_word = "Python"
             return selected_word
 
     def list_to_string(self, print_guessing_word: list) -> str:
