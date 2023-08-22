@@ -1,7 +1,7 @@
 import logging
 import random
 from typing import Union
-from word_list import ANIMAL_LIST
+
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -14,10 +14,29 @@ logging.basicConfig(
 
 class HangManBase:
     def __init__(self) -> None:
-        self.animal_list = ANIMAL_LIST
+        self.word_list = []
 
-    def word_selection(self) -> str:
-        return random.choice(self.animal_list).upper()
+    def select_word_list(self, word_list: str) -> str:
+        num_words_processed = 0
+        curr_word = None
+        word: str = None
+        with word_list as f:
+            for word in f:
+                word = word.strip().upper()
+                num_words_processed += 1
+                if random.randint(1, num_words_processed) == 1:
+                    curr_word = word
+        return curr_word
+      
+    def word_selection(self, selected_list :int) -> str:
+        if selected_list == 1:
+            self.word_list = open("word_list/countries.txt", 'r')
+            selected_word = self.select_word_list(self.word_list)
+            return selected_word
+        if selected_list == 2:
+            self.word_list = open("word_list/animals.txt", 'r')
+            selected_word = self.select_word_list(self.word_list)
+            return selected_word
 
     def list_to_string(self, print_guessing_word: list) -> str:
         hidden_word = ""
@@ -91,7 +110,7 @@ class PlayHangMan(HangManBase):
                     else:
                         return 1 # Guess successfull
                 else:
-                    # counter_bad =
+                    
                     if self.bad_guess_counter() == self.max_guess:  # Bad guess counter
                         logging.info(
                             f"Player {self.player_name} LOST. "
