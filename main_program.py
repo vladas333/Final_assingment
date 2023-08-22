@@ -28,6 +28,7 @@ class HangManBase:
                     curr_word = word
         return curr_word
       
+    # Word list selection
     def word_selection(self, selected_list :int) -> str:
         if selected_list == 1:
             self.word_list = open("word_list/countries.txt", 'r')

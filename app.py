@@ -8,6 +8,7 @@ from hang_man_graphic import hangman_graphic
 while True:
     player_name = str(input(f"Hello, player. Please enter your name. \n").upper())
     select_word_category = int(input(f"From which category you want to guess a word: \n1. Countries\n2. Animals \n"))
+    # Word list selection
     if select_word_category == 1:
         word_to_guess = HangManBase().word_selection(1)
         print(f"You select category: Countries")
