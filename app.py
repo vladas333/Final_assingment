@@ -7,12 +7,19 @@ from hang_man_graphic import hangman_graphic
 
 while True:
     player_name = str(input(f"Hello, player. Please enter your name. \n").upper())
-    word_to_guess = HangManBase().word_selection()
+    select_word_category = int(input(f"From which category you want to guess a word: \n1. Countries\n2. Animals \n"))
+    if select_word_category == 1:
+        word_to_guess = HangManBase().word_selection(1)
+        print(f"You select category: Countries")
+    elif select_word_category == 2:
+        word_to_guess = HangManBase().word_selection(2)
+        print(f"You select category: Animals")
+    
     main_game_mode = PlayHangMan(player_name, word_to_guess)
     guess_letter = ""
     
     hide_guessing_word = main_game_mode.guessing_word_hide(guess_letter)
-    print(word_to_guess)
+    print(f"PASALINTI PRIES GALUTINI, SPEJAMAS ZODIS:    {word_to_guess}")
     print(hide_guessing_word)
     select_game_mode = int(
         input(
