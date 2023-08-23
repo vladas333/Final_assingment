@@ -27,15 +27,15 @@ class HangManBase:
                 if random.randint(1, num_words_processed) == 1:
                     curr_word = word
         return curr_word
-      
+
     # Word list selection
-    def word_selection(self, selected_list :int) -> str:
+    def word_selection(self, selected_list: int) -> str:
         if selected_list == 1:
-            self.word_list = open("word_list/countries.txt", 'r')
+            self.word_list = open("word_list/countries.txt", "r")
             selected_word = self.select_word_list(self.word_list)
             return selected_word
         elif selected_list == 2:
-            self.word_list = open("word_list/animals.txt", 'r')
+            self.word_list = open("word_list/animals.txt", "r")
             selected_word = self.select_word_list(self.word_list)
             return selected_word
         else:
@@ -53,7 +53,7 @@ class PlayHangMan(HangManBase):
     def __init__(self, player_name: str, selected_word: str) -> None:
         self.player_name = player_name
         self.selected_word = list(selected_word)
-        self.guessed_letters_list = [" "]
+        self.guessed_letters_list = [" ", "-"]
         self.max_guess = 10
         self.bad_guess_count = 0
 
@@ -72,7 +72,7 @@ class PlayHangMan(HangManBase):
             if letter_guessed in self.guessed_letters_list:
                 print_guessing_word.append(letter_guessed)
             else:
-                print_guessing_word.append("-")
+                print_guessing_word.append("_")
         return self.list_to_string(print_guessing_word)
 
     def bad_guess_counter(self) -> bool:
@@ -84,7 +84,7 @@ class PlayHangMan(HangManBase):
             return True
         else:
             return False
-    
+
     def is_won(self) -> bool:
         counter = 0
         for letter in self.selected_word:
@@ -94,11 +94,10 @@ class PlayHangMan(HangManBase):
             return True
         else:
             return False
-    
+
     def bad_guess_counter(self) -> int:
         self.bad_guess_count += 1
         return self.bad_guess_count
-
 
     def guess_one_letter(self, letter_guessed: str) -> Union[list, int]:
         if letter_guessed.isalpha() and len(letter_guessed) == 1:
@@ -106,23 +105,23 @@ class PlayHangMan(HangManBase):
                 if letter_guessed in self.selected_word:
                     if self.is_won() == True:
                         logging.info(
-                        f"Player {self.player_name} WINS. "
-                        f"Word was: {self.list_to_string(self.selected_word)}. "
-                        f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
-                    )
-                        return 6 # Winner
+                            f"Player {self.player_name} WINS. "
+                            f"Word was: {self.list_to_string(self.selected_word)}. "
+                            f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+                        )
+                        return 6  # Winner
                     else:
-                        return 1 # Guess successfull
+                        return 1  # Guess successfull
                 else:
-                    
                     if self.bad_guess_counter() == self.max_guess:  # Bad guess counter
                         logging.info(
                             f"Player {self.player_name} LOST. "
                             f"Word was: {self.list_to_string(self.selected_word)}. "
-                            f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}")
-                        return 5  # Dont have guess Still have guess                    
+                            f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+                        )
+                        return 5  # You lose
                     else:
-                        return 2 # Still have guess
+                        return 2  # Still have guess
             else:
                 return 3  # You already used letter
         else:
@@ -131,8 +130,18 @@ class PlayHangMan(HangManBase):
     def guess_all_word(self, all_word: str) -> int:
         all_word_list = list(all_word)
         if all_word_list == self.selected_word:
-            return 1
+            logging.info(
+                f"Player {self.player_name} WINS. "
+                f"Word was: {self.list_to_string(self.selected_word)}. "
+                f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+            )
+            return 1  # Winner
         elif self.bad_guess_counter() == self.max_guess:
-            return 3
+            logging.info(
+                f"Player {self.player_name} LOST. "
+                f"Word was: {self.list_to_string(self.selected_word)}. "
+                f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+            )
+            return 3  # You lose
         else:
-            return 2
+            return 2  # Incorrect gues
