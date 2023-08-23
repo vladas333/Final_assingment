@@ -30,16 +30,14 @@ Cabo Verde
 Cambodia
 Cameroon
 Canada
-Central African Republic (CAR)
+Central African Republic
 Chad
 Chile
 China
 Colombia
 Comoros
-Congo, Democratic Republic of the
-Congo, Republic of the
+Congo
 Costa Rica
-Cote d'Ivoire
 Croatia
 Cuba
 Cyprus
@@ -54,7 +52,7 @@ El Salvador
 Equatorial Guinea
 Eritrea
 Estonia
-Eswatini (formerly Swaziland)
+Swaziland
 Ethiopia
 Fiji
 Finland
@@ -116,7 +114,7 @@ Mongolia
 Montenegro
 Morocco
 Mozambique
-Myanmar (formerly Burma)
+Myanmar
 Namibia
 Nauru
 Nepal
@@ -126,7 +124,7 @@ Nicaragua
 Niger
 Nigeria
 North Korea
-North Macedonia (formerly Macedonia)
+Macedonia
 Norway
 Oman
 Pakistan
@@ -183,13 +181,13 @@ Turkmenistan
 Tuvalu
 Uganda
 Ukraine
-United Arab Emirates (UAE)
-United Kingdom (UK)
-United States of America (USA)
+United Arab Emirates
+United Kingdom
+United States of America
 Uruguay
 Uzbekistan
 Vanuatu
-Vatican City (Holy See)
+Vatican City
 Venezuela
 Vietnam
 Yemen
