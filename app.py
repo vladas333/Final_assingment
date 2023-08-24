@@ -4,7 +4,6 @@ from main_program import HangManBase, PlayHangMan
 from hang_man_graphic import hangman_graphic
 
 
-
 def select_category() -> str:
     while True:
         select_word_category = input(
@@ -18,7 +17,6 @@ def select_category() -> str:
         except ValueError:
             print("You enter not integer. Try again to select word category.\n")
             continue
-    # return word_to_guess
 
 
 def game_mode_setup() -> int:
@@ -38,86 +36,84 @@ def game_mode_setup() -> int:
             continue
 
 
-def all_word_mode(player_name: str, word_to_guess: str):
+def all_word_mode(player_name: str, word_to_guess: str) -> None:
     main_game_mode = PlayHangMan(player_name, word_to_guess)
-    guess_letter = ""
     while True:
         print(hangman_graphic[main_game_mode.bad_guess_count])
         print(f"You already made unsuccessful {main_game_mode.bad_guess_count} guesses")
-        print(f"Word: {main_game_mode.guessing_word_hide(guess_letter)}")
+        print(
+            f"Word to guess:\n*****->   {main_game_mode.guessing_word_hide()}   <-*****"
+        )
         all_word = input("So try to guess all word:\n").upper()
         os.system("cls")
 
         word_guess_mode = main_game_mode.guess_all_word(all_word)
         if word_guess_mode == 1:
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("Your guess was successfull!!.")
+            print("Your guess was successful!!.")
             time.sleep(5)
-            return main_meniu()
-            # print(hanged(main_game_mode.bad_guess_count))
+            return main_meniu(player_name)
         elif word_guess_mode == 2:
-            print("Your gues was not successfull.")
-            continue
-            # print(hanged(main_game_mode.bad_guess_count))
-        elif word_guess_mode == 3:
-            print("Your guesses was not successfull.")
+            print("Your guesses was not successful.")
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("Word to guess was:", word_to_guess.upper())
+            print("Word to guess was:", word_to_guess)
             time.sleep(5)
-            return main_meniu()
+            return main_meniu(player_name)
+        elif word_guess_mode == 3:
+            print("Your gues was not successful.")
+            continue
 
 
-def letter_mode(player_name: str, word_to_guess: str):
+def letter_mode(player_name: str, word_to_guess: str) -> None:
     guess_letter = ""
     main_game_mode = PlayHangMan(player_name, word_to_guess)
     while True:
         print(hangman_graphic[main_game_mode.bad_guess_count])
-        # guest_letters_list = main_game_mode.guessed_letters_listb
-
         print(f"Already used letters:\n", main_game_mode.show_used_letters())
-        print(f"Word:  {main_game_mode.guessing_word_hide(guess_letter)}\n")
+        print(
+            f"Word to guess:\n*****->   {main_game_mode.guessing_word_hide()}   <-*****\n"
+        )
         guess_letter = input("Guess a letter: ").upper()
         os.system("cls")
         letter_guess_mode = main_game_mode.guess_one_letter(guess_letter)
         print("* * * * * * * * * * * * * *\n")
-        if letter_guess_mode == 1:
+        if letter_guess_mode == 6:
             print(f"Correct! there is one or more {guess_letter} in the word")
-        elif letter_guess_mode == 2:
+        elif letter_guess_mode == 5:
             print(f"Incorrect! there are no: {guess_letter}")
             print(f"You already made {main_game_mode.bad_guess_count} guesses")
-        elif letter_guess_mode == 3:
+        elif letter_guess_mode == 4:
             print(f"Info! You already used letter: {guess_letter}")
             print(f"Already used letters: ")
-        elif letter_guess_mode == 4:
+        elif letter_guess_mode == 3:
             print(
                 f"Incorrect! You guess not a letter or write not one letter {guess_letter}"
             )
-        elif letter_guess_mode == 5:
+        elif letter_guess_mode == 2:
             print(hangman_graphic[main_game_mode.bad_guess_count])
             print("Sorry. You loose.")
-            print("Word to guess was:", word_to_guess.upper())
+            print("Word to guess was:", word_to_guess)
             time.sleep(5)
-            return main_meniu()
-        elif letter_guess_mode == 6:
+            return main_meniu(player_name)
+        elif letter_guess_mode == 1:
             print(hangman_graphic[main_game_mode.bad_guess_count])
             print("You win!!!!!")
             time.sleep(5)
-            # add selection play again or exit
-            return main_meniu()
+            return main_meniu(player_name)
 
 
-def main_meniu(player_name: str):
-    guess_letter = ""
-    # word_to_guess = select_category()
+def main_meniu(player_name: str) -> None:
     while True:
-        # player_name = str(input(f"Hello, player. Please enter your name. \n").upper())
         word_to_guess = select_category()
+        print("\n-----------------------")
         print(f"PASALINTI PRIES GALUTINI, SPEJAMAS ZODIS:    {word_to_guess}")
+        print("-----------------------\n")
         main_game_mode = PlayHangMan(player_name, word_to_guess)
-        # guess_letter = ""
         print("* * * * * * * * * * * * * *\n")
         print(hangman_graphic[main_game_mode.bad_guess_count])
-        print(f"Word to guess:\n {main_game_mode.guessing_word_hide(guess_letter)}")
+        print(
+            f"Word to guess:\n*****->   {main_game_mode.guessing_word_hide()}   <-*****"
+        )
         select_game_mode = game_mode_setup()
         os.system("cls")
         print("* * * * * * * * * * * * * *\n")
@@ -133,7 +129,7 @@ def main_meniu(player_name: str):
             exit()
 
 
-def app():
+def app() -> None:
     player_name = str(input(f"Hello, player. Please enter your name. \n").upper())
     main_meniu(player_name)
 
