@@ -16,6 +16,7 @@ class HangManBase:
     def __init__(self) -> None:
         self.word_list = []
 
+    # Words list read
     def select_word_list(self, word_list: str) -> str:
         num_words_processed = 0
         curr_word = None
@@ -28,14 +29,15 @@ class HangManBase:
                     curr_word = word
         return curr_word
 
-    # Word list selection
+    # Word selection
+    """change in OS library, file selector"""
     def word_selection(self, selected_list: int) -> str:
         if selected_list == 1:
-            self.word_list = open("word_list/countries.txt", "r")
+            self.word_list = open("word_lists/countries.txt", "r")
             selected_word = self.select_word_list(self.word_list)
             return selected_word
         elif selected_list == 2:
-            self.word_list = open("word_list/animals.txt", "r")
+            self.word_list = open("word_lists/animals.txt", "r")
             selected_word = self.select_word_list(self.word_list)
             return selected_word
         else:
@@ -66,7 +68,7 @@ class PlayHangMan(HangManBase):
     def show_used_letters(self) -> str:
         return self.list_to_string(self.guessed_letters_list)
 
-    def guessing_word_hide(self, letter_guessed: str) -> str:
+    def guessing_word_hide(self) -> str:
         print_guessing_word = []
         for letter_guessed in self.selected_word:
             if letter_guessed in self.guessed_letters_list:
@@ -75,17 +77,7 @@ class PlayHangMan(HangManBase):
                 print_guessing_word.append("_")
         return self.list_to_string(print_guessing_word)
 
-    def bad_guess_counter(self) -> bool:
-        guess_count = 0
-        for letter in self.guessed_letters_list:
-            if letter not in self.selected_word:
-                guess_count = guess_count + 1
-        if guess_count != self.max_guess:
-            return True
-        else:
-            return False
-
-    def is_won(self) -> bool:
+    def check_if_whole_word_guessed(self) -> bool:
         counter = 0
         for letter in self.selected_word:
             if letter in self.guessed_letters_list:
@@ -99,19 +91,19 @@ class PlayHangMan(HangManBase):
         self.bad_guess_count += 1
         return self.bad_guess_count
 
-    def guess_one_letter(self, letter_guessed: str) -> Union[list, int]:
+    def guess_one_letter(self, letter_guessed: str) -> int:
         if letter_guessed.isalpha() and len(letter_guessed) == 1:
             if self.check_unused_letters(letter_guessed) == True:
                 if letter_guessed in self.selected_word:
-                    if self.is_won() == True:
+                    if self.check_if_whole_word_guessed() == True:
                         logging.info(
                             f"Player {self.player_name} WINS. "
                             f"Word was: {self.list_to_string(self.selected_word)}. "
                             f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
                         )
-                        return 6  # Winner
+                        return 1  # Winner
                     else:
-                        return 1  # Guess successfull
+                        return 6  # Correct! there is one or more letters
                 else:
                     if self.bad_guess_counter() == self.max_guess:  # Bad guess counter
                         logging.info(
@@ -119,13 +111,13 @@ class PlayHangMan(HangManBase):
                             f"Word was: {self.list_to_string(self.selected_word)}. "
                             f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
                         )
-                        return 5  # You lose
+                        return 2  # You lose
                     else:
-                        return 2  # Still have guess
+                        return 5  # Incorrect! there are no letters. Still have guess
             else:
-                return 3  # You already used letter
+                return 4  # "Info! You already used letter
         else:
-            return 4  # Not a letter used or user several letters
+            return 3  # Incorrect! You guess not a letter or write not one letter
 
     def guess_all_word(self, all_word: str) -> int:
         all_word_list = list(all_word)
@@ -133,15 +125,15 @@ class PlayHangMan(HangManBase):
             logging.info(
                 f"Player {self.player_name} WINS. "
                 f"Word was: {self.list_to_string(self.selected_word)}. "
-                f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+                f"Guesses was made: {self.bad_guess_count}"
             )
             return 1  # Winner
         elif self.bad_guess_counter() == self.max_guess:
             logging.info(
                 f"Player {self.player_name} LOST. "
                 f"Word was: {self.list_to_string(self.selected_word)}. "
-                f"Guessed letters was: {self.list_to_string(self.guessed_letters_list)}"
+                f"Guesses was made: {self.bad_guess_count}"
             )
-            return 3  # You lose
+            return 2  # You lose
         else:
-            return 2  # Incorrect gues
+            return 3  # Incorrect guess
