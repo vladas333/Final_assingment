@@ -1,4 +1,5 @@
 import logging
+import os
 import random
 from typing import Union
 
@@ -14,6 +15,7 @@ logging.basicConfig(
 
 class HangManBase:
     def __init__(self) -> None:
+        self.word_lists_folder = "word_lists/"
         self.word_list = []
 
     # Words list read
@@ -29,17 +31,17 @@ class HangManBase:
                     curr_word = word
         return curr_word
 
+    def list_available_word_lists(self) -> list:
+        word_list_files = [file for file in os.listdir(self.word_lists_folder) if file.endswith(".txt")]
+        return word_list_files
+
     # Word selection
-    """change in OS library, file selector"""
-    def word_selection(self, selected_list: int) -> str:
-        if selected_list == 1:
-            self.word_list = open("word_lists/countries.txt", "r")
-            selected_word = self.select_word_list(self.word_list)
-            return selected_word
-        elif selected_list == 2:
-            self.word_list = open("word_lists/animals.txt", "r")
-            selected_word = self.select_word_list(self.word_list)
-            return selected_word
+    def word_selection(self, available_word_lists: list, select_word_category: int) -> str:
+        if 1 <= select_word_category <= len(available_word_lists):
+            selected_file = os.path.join(self.word_lists_folder, available_word_lists[select_word_category - 1])
+            with open(selected_file, "r") as word_list_file:
+                selected_word = self.select_word_list(word_list_file)
+                return selected_word
         else:
             selected_word = "Python"
             return selected_word

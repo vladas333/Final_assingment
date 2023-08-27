@@ -1,18 +1,23 @@
 import os
-import time
 from main_program import HangManBase, PlayHangMan
 from hang_man_graphic import hangman_graphic
 
 
 def select_category() -> str:
     while True:
-        select_word_category = input(
-            f"\nFrom which word category you want to guess a word: \n1. Countries\n2. Animals \n"
-        )
+        try:
+            available_word_lists = HangManBase().list_available_word_lists()
+        except IndexError:
+            print(f"You can't play, becouse there is no word lists in forder.")
+        print("Available word list files:")
+        for index, filename in enumerate(available_word_lists, start=1):
+            print(f"{index}. {filename}")
+        
+        select_word_category = input("Select a word list by entering its number: \n")
         try:
             select_word_category == int(select_word_category)
             select_word_category = int(select_word_category)
-            word_to_guess = HangManBase().word_selection(select_word_category)
+            word_to_guess = HangManBase().word_selection(available_word_lists, select_word_category)
             return word_to_guess
         except ValueError:
             print("You enter not integer. Try again to select word category.\n")
@@ -22,7 +27,7 @@ def select_category() -> str:
 def game_mode_setup() -> int:
     while True:
         select_game_mode_input = input(
-            "How you try to guess a word:\n 1. Guess all word\n 2. Guess a letter\n 3. Change name\n 4. Exit\n"
+            "How you try to guess a word?\nSelect a game mode by entering its number::\n 1. Guess all word\n 2. Guess a letter\n 3. Change name\n 4. Exit\n"
         )
         try:
             select_game_mode_input == int(select_game_mode_input)
@@ -50,17 +55,17 @@ def all_word_mode(player_name: str, word_to_guess: str) -> None:
         word_guess_mode = main_game_mode.guess_all_word(all_word)
         if word_guess_mode == 1:
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("Your guess was successful!!.")
+            print(f"Congratulations {player_name}. You win!!!!!\n")
             time.sleep(5)
             return main_meniu(player_name)
         elif word_guess_mode == 2:
-            print("Your guesses was not successful.")
+            print(f"Sorry {player_name}. Your guesses was not successful./nYou Lose.")
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("Word to guess was:", word_to_guess)
+            print(f"Word to guess was: {word_to_guess} \n")
             time.sleep(5)
             return main_meniu(player_name)
         elif word_guess_mode == 3:
-            print("Your gues was not successful.")
+            print("Your guess was not successful.")
             continue
 
 
@@ -80,7 +85,7 @@ def letter_mode(player_name: str, word_to_guess: str) -> None:
         if letter_guess_mode == 6:
             print(f"Correct! there is one or more {guess_letter} in the word")
         elif letter_guess_mode == 5:
-            print(f"Incorrect! there are no: {guess_letter}")
+            print(f"Incorrect! There are no: {guess_letter}")
             print(f"You already made {main_game_mode.bad_guess_count} guesses")
         elif letter_guess_mode == 4:
             print(f"Info! You already used letter: {guess_letter}")
@@ -91,13 +96,13 @@ def letter_mode(player_name: str, word_to_guess: str) -> None:
             )
         elif letter_guess_mode == 2:
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("Sorry. You loose.")
-            print("Word to guess was:", word_to_guess)
+            print(f"Sorry {player_name}. You loose.")
+            print(f"Word to guess was: {word_to_guess}\n")
             time.sleep(5)
             return main_meniu(player_name)
         elif letter_guess_mode == 1:
             print(hangman_graphic[main_game_mode.bad_guess_count])
-            print("You win!!!!!")
+            print(f"Congratulations {player_name}. You win!!!!!\n")
             time.sleep(5)
             return main_meniu(player_name)
 
@@ -112,7 +117,7 @@ def main_meniu(player_name: str) -> None:
         print("* * * * * * * * * * * * * *\n")
         print(hangman_graphic[main_game_mode.bad_guess_count])
         print(
-            f"Word to guess:\n*****->   {main_game_mode.guessing_word_hide()}   <-*****"
+            f"Word to guess:\n*****->   {main_game_mode.guessing_word_hide()}   <-*****\n"
         )
         select_game_mode = game_mode_setup()
         os.system("cls")
