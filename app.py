@@ -1,5 +1,6 @@
 import os
 from main_program import HangManBase, PlayHangMan
+import time
 from hang_man_graphic import hangman_graphic
 
 
@@ -9,7 +10,7 @@ def select_category() -> str:
             available_word_lists = HangManBase().list_available_word_lists()
         except IndexError:
             print(f"You can't play, becouse there is no word lists in forder.")
-        print("Available word list files:")
+        print("Available word list:")
         for index, filename in enumerate(available_word_lists, start=1):
             print(f"{index}. {filename}")
         
@@ -110,9 +111,6 @@ def letter_mode(player_name: str, word_to_guess: str) -> None:
 def main_meniu(player_name: str) -> None:
     while True:
         word_to_guess = select_category()
-        print("\n-----------------------")
-        print(f"PASALINTI PRIES GALUTINI, SPEJAMAS ZODIS:    {word_to_guess}")
-        print("-----------------------\n")
         main_game_mode = PlayHangMan(player_name, word_to_guess)
         print("* * * * * * * * * * * * * *\n")
         print(hangman_graphic[main_game_mode.bad_guess_count])
@@ -135,7 +133,7 @@ def main_meniu(player_name: str) -> None:
 
 
 def app() -> None:
-    player_name = str(input(f"Hello, player. Please enter your name. \n").upper())
+    player_name = str(input(f"Hello, player. Please enter your name and press Enter. \n").upper())
     main_meniu(player_name)
 
 
