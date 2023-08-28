@@ -19,3 +19,18 @@ Solve the puzzle before the hangman dies.
 git clone https://github.com/vladas333/Hangman_CLI.git
 cd Hangman_CLI
 ```
+
+2. Create and activate virtual environment:
+```bash
+python -m venv .venv
+source .venv/Scripts/activate
+```
+
+3. Install requirements:
+```bash
+pip install -r requirements.txt
+```
+4. Run the game:
+```bash
+python app.py
+```
