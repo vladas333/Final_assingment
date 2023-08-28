@@ -1,8 +1,7 @@
 import os
 from main_program import HangManBase, PlayHangMan
-import time
 from hang_man_graphic import hangman_graphic
-
+import time
 
 def select_category() -> str:
     while True:
