@@ -34,3 +34,10 @@ pip install -r requirements.txt
 ```bash
 python app.py
 ```
+
+## How to play the game
+1. Then you run the game, it would ask to enter your name and press Enter.
+2. After then, you have to select from which category you whant to guess a word.
+3. In third meniu, you would be able to select how to guess all word: guess all word or guess a letter. More over, here you could change your name and you could exit the game.
+4. Now all fun begins. Try to guess a word and don't to hang man.
+5. After you win or lose, you would be redirected to word list selection meniu, for other round.
