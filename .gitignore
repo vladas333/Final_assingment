@@ -4,5 +4,4 @@ __pycache__
 .vscode
 todo.txt
 player_data.log
-smth.py
 crud.py
