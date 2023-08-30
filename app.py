@@ -59,7 +59,7 @@ def all_word_mode(player_name: str, word_to_guess: str) -> None:
             time.sleep(5)
             return main_meniu(player_name)
         elif word_guess_mode == 2:
-            print(f"Sorry {player_name}. Your guesses was not successful./nYou Lose.")
+            print(f"Sorry {player_name}. Your guesses was not successful.\nYou Lose.")
             print(hangman_graphic[main_game_mode.bad_guess_count])
             print(f"Word to guess was: {word_to_guess} \n")
             time.sleep(5)
